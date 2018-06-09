@@ -1,0 +1,7 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+author_add:
+    path:     /author/add/{name}
+    defaults: { _controller: AppBundle:Author:add }
