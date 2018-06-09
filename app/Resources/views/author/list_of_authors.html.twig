@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        {% for author in authors %}
+            <li><a href="#">The author name is - {{ author.name }}</a> </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
