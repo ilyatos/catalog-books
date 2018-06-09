@@ -1,0 +1,16 @@
+AppBundle\Entity\Author:
+    type: entity
+    table: author
+    repositoryClass: AppBundle\Repository\AuthorRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: '255'
+            unique: true
+    lifecycleCallbacks: {  }
