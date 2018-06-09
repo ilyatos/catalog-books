@@ -5,3 +5,7 @@ app:
 author_add:
     path:     /author/add/{name}
     defaults: { _controller: AppBundle:Author:add }
+
+author_list:
+    path:     /author/list
+    defaults: { _controller: AppBundle:Author:list }
