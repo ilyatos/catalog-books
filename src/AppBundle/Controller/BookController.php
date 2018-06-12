@@ -59,6 +59,14 @@ class BookController extends Controller
         ]);
     }*/
 
+    /**
+     * В своё опрадание за этот говнокод (хардкод) внизу скажу, что то, что наверху,
+     * работало только для одного автора. Ну а может я просто ненавижу построители форм? Кто знает...
+     *
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function addAction(EntityManagerInterface $em, Request $request)
     {
         $data = $request->request->all();
