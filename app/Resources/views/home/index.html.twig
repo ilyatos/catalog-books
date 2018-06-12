@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+
+    .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+
+    .item-pages{
+        grid-column: span 2 / auto;
+    }
+
+    .item-pages a {
+        border: 4px skyblue solid;
+        border-radius: 10px;
+        background: skyblue;
+        margin: 10px;
+        padding-left: 15px;
+        padding-right: 15px
+    }
+
+    .item-pages a:hover {
+        background: #79b9d3;
+    }
+
+
+
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="item-first">
+            <h3>Авторы</h3>
+            <ul>
+                {% for author in authors %}
+                    <li><a href="#">{{ author.name }}. айди - {{ author.id }}</a> </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="item-second">
+            <h3>Книги</h3>
+            <ul>
+                {% if not books %}
+                    <li>Книг нет, ну или больше нет.</li>
+                {% endif %}
+                {% for book in books %}
+                    <li><a href="#">Название книги - {{ book.title }}. И eё ISBN - {{ book.isbn }}</a> </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="item-pages">
+            <ul>
+                <li>
+                    {% for page in 1..pages %}
+                        <a href="/{{ page }}">{{ page }}</a>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+{% endblock %}
