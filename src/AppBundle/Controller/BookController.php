@@ -40,4 +40,29 @@ class BookController extends Controller
         return new Response(null);
     }
 
+    public function profileAction($id)
+    {
+        $bookRep = $this->getDoctrine()->getRepository(Book::class);
+
+        $book = $bookRep->find($id);
+        $authors = $book->getAuthors();
+
+        return $this->render('book/profile.html.twig', [
+            'book' => $book,
+            'authors' => $authors
+        ]);
+    }
+
+    public function deleteAction(EntityManagerInterface $em, $id)
+    {
+        $bookRep = $this->getDoctrine()->getRepository(Book::class);
+
+        $book = $bookRep->find($id);
+
+        $em->remove($book);
+        $em->flush();
+
+        return $this->redirectToRoute('homepage');
+    }
+
 }

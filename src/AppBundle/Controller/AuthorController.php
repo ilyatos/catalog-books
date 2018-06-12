@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthorController extends Controller
 {
     /**
-     * Post a new author to the DB
+     * Post a new author
      *
      * @param EntityManagerInterface $em
      * @param $name
@@ -36,9 +36,35 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function deleteAction()
+    /**
+     * Get information about the author and his books
+     *
+     * @param $id
+     * @return Response
+     */
+    public function profileAction($id)
     {
-        return new Response('null');
+        $authorRep = $this->getDoctrine()->getRepository(Author::class);
+
+        $author = $authorRep->find($id);
+        $books = $author->getBooks();
+
+        return $this->render('author/profile.html.twig', [
+            'author' => $author,
+            'books' => $books
+        ]);
+    }
+
+    public function deleteAction(EntityManagerInterface $em, $id)
+    {
+        $authorRep = $this->getDoctrine()->getRepository(Author::class);
+
+        $author = $authorRep->find($id);
+
+        $em->remove($author);
+        $em->flush();
+
+        return $this->redirectToRoute('homepage');
     }
 
 }
