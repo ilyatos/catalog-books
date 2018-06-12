@@ -54,6 +54,7 @@ class Book
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Author", mappedBy="books")
+     * @ORM\JoinTable(name="author_book")
      */
     private $authors;
 
@@ -167,6 +168,53 @@ class Book
     {
         return $this->numberOfPages;
     }
-    
 
+    /**
+     * Add author.
+     *
+     * @param Author $author
+     *
+     * @return Book
+     */
+    public function addAuthor(\AppBundle\Entity\Author $author)
+    {
+        $author->addBook($this);
+        $this->authors[] = $author;
+
+        return $this;
+    }
+
+    /**
+     * @param Author $author
+     * @return $this
+     */
+    public function setAuthors(\AppBundle\Entity\Author $author)
+    {
+        $author->addBook($this);
+        $this->authors[] = $author;
+
+        return $this;
+    }
+
+    /**
+     * Remove author.
+     *
+     * @param \AppBundle\Entity\Author $author
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeAuthor(\AppBundle\Entity\Author $author)
+    {
+        return $this->authors->removeElement($author);
+    }
+
+    /**
+     * Get authors.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getAuthors()
+    {
+        return $this->authors;
+    }
 }

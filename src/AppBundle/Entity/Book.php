@@ -54,6 +54,7 @@ class Book
      * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Author", mappedBy="books")
+     * @ORM\JoinTable(name="author_book")
      */
     private $authors;
 
@@ -167,19 +168,29 @@ class Book
     {
         return $this->numberOfPages;
     }
-    
-
 
     /**
      * Add author.
      *
-     * @param \AppBundle\Entity\Author $author
+     * @param Author $author
      *
      * @return Book
      */
     public function addAuthor(\AppBundle\Entity\Author $author)
     {
         //$author->addBook($this);
+        $this->authors[] = $author;
+
+        return $this;
+    }
+
+    /**
+     * @param Author $author
+     * @return $this
+     */
+    public function setAuthors(\AppBundle\Entity\Author $author)
+    {
+        $author->addBook($this);
         $this->authors[] = $author;
 
         return $this;
