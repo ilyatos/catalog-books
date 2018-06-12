@@ -5,17 +5,32 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Author;
 use AppBundle\Entity\Book;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class HomeController extends Controller
 {
+    /**
+     * Return lists of authors and books
+     *
+     * @param int $page
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction($page = 1)
     {
         $authorRep = $this->getDoctrine()->getRepository(Author::class);
         $bookRep = $this->getDoctrine()->getRepository(Book::class);
-        $limit = 10;
+        $limit = 5;
 
         $authors = $authorRep->getAllByName($page, $limit);
+
+        foreach ($authors as $author) {
+            $exName = explode(' ', $author->getName());
+            $name = $exName[0].' '.mb_substr($exName[1],0, 1).'.';
+            if (array_key_exists(2, $exName)) {
+                $name .= mb_substr($exName[2],0, 1).'.';
+            }
+            $author->setName($name);
+        }
+
         $books = $bookRep->getAllByTitle($page, $limit);
 
         $totalAuthors = $authors->count();
