@@ -41,19 +41,4 @@ class AuthorController extends Controller
         return new Response('null');
     }
 
-    /**
-     * Get all authors from the `author` table
-     *
-     * @return Response
-     */
-    public function listAction()
-    {
-        $authorRep = $this->getDoctrine()->getRepository(Author::class);
-
-        $authors = $authorRep->findAll();
-
-        return $this->render('author/list_of_authors.html.twig', [
-          'authors' => $authors
-        ]);
-    }
 }
