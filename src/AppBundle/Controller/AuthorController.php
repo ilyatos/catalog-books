@@ -16,15 +16,19 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthorController extends Controller
 {
+    /**
+     * Post a new author to the DB
+     *
+     * @param EntityManagerInterface $em
+     * @param $name
+     * @return Response
+     */
     public function addAction(EntityManagerInterface $em, $name)
     {
         $author = new Author();
         $author->setName($name);
 
-        // tells Doctrine you want to (eventually) save the Product (no queries yet)
         $em->persist($author);
-
-        // actually executes the queries (i.e. the INSERT query)
         $em->flush();
 
         return $this->render('author/add_message.html.twig', [
@@ -37,8 +41,19 @@ class AuthorController extends Controller
         return new Response('null');
     }
 
+    /**
+     * Get all authors from the `author` table
+     *
+     * @return Response
+     */
     public function listAction()
     {
-        return new Response('null');
+        $authorRep = $this->getDoctrine()->getRepository(Author::class);
+
+        $authors = $authorRep->findAll();
+
+        return $this->render('author/list_of_authors.html.twig', [
+          'authors' => $authors
+        ]);
     }
 }
