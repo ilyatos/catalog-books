@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    .container {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 10px;
+    }
+
+    #form_save {
+    border: 2px skyblue solid;
+    border-radius: 10px;
+    background: skyblue;
+    padding: .5em;
+    }
+
+    #form_save:hover {
+    background: #79b9d3;
+    }
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="author-profile" style="font-size: 1.5em">
+            <h3>
+                Добавить автора/книгу
+            </h3>
+            <form action="/book/add" method="post">
+                <div>
+                    <label for="title">Название книги: </label>
+                    <input title="title" type="text" id="form_title" name="title" required="required">
+                </div>
+                <div>
+                    <label for="publishingYear" class="required">Год издания: </label>
+                    <input title="publishingYear" type="text" id="form_title" name="publishingYear" required="required">
+                </div>
+                <div>
+                    <label for="isbn" class="required">ISBN: </label>
+                    <input title="isbn" type="text" id="form_title" name="isbn" required="required">
+                </div>
+                <div>
+                    <label for="numberOfPages" class="required">Количество страниц: </label>
+                    <input title= "numberOfPages" type="text" id="form_title" name="numberOfPages" required="required">
+                </div>
+                <div>
+                    <label for="selecter" class="required">Добавить авторов: </label>
+                    <select name="select[]" size="3" multiple title="selecter">
+                        {% for author in authors %}
+                            <option value="{{ author.id }}">{{ author.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <button type="submit" id="form_save" name="form[save]">Добавить книгу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

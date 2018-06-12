@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BookController extends Controller
 {
 
-    public function addAction(EntityManagerInterface $em, Request $request)
+   /* public function addAction(EntityManagerInterface $em, Request $request)
     {
         $bookForm = new Book();
 
@@ -53,23 +53,43 @@ class BookController extends Controller
 
             return $this->redirectToRoute('homepage');
         }
-        /*$book = new Book();
-        $author = $this->getDoctrine()->getRepository(Author::class)->find(29);
-
-        $book->setTitle('fff');
-        $book->setIsbn('23232323');
-        $book->setPublishingYear('2222');
-        $book->setNumberOfPages('222');
-        $book->addAuthor($author);
-        $author->addBook($book);
-
-        $em->persist($author);
-        $em->persist($book);
-
-        $em->flush();*/
 
         return $this->render('add_author_book.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }*/
+
+    public function addAction(EntityManagerInterface $em, Request $request)
+    {
+        $data = $request->request->all();
+
+        $authorsRep = $this->getDoctrine()->getRepository(Author::class);
+        $authors = $authorsRep->findAll();
+
+        if ($data) {
+            $book = new Book();
+
+            $book->setTitle($data['title']);
+            $book->setNumberOfPages($data['numberOfPages']);
+            $book->setIsbn($data['isbn']);
+            $book->setPublishingYear($data['publishingYear']);
+
+            foreach ($data['select'] as $authorId) {
+                $author = $authorsRep->find($authorId);
+                $author->addBook($book);
+                $book->addAuthor($author);
+
+                $em->persist($author);
+                $em->persist($book);
+
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('add_book.html.twig', [
+            'authors' => $authors,
         ]);
     }
 
