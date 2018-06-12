@@ -4,16 +4,24 @@ app:
 
 homepage:
     path: /
-    defaults: { _controller: AppBundle:Home:index}
+    defaults: { _controller: AppBundle:Home:index }
 
 homepage_page:
     path: /{page}
-    defaults: { _controller: AppBundle:Home:index}
+    defaults: { _controller: AppBundle:Home:index }
 
-author_add:
-    path:     /author/add/{name}
-    defaults: { _controller: AppBundle:Author:add }
+single_author:
+    path: /author/{id}/profile
+    defaults: { _controller: AppBundle:Author:profile }
 
-book_add_with_author:
-    path:     /book/add
-    defaults: { _controller: AppBundle:Book:create }
+delete_author:
+    path: /author/{id}/delete
+    defaults: { _controller: AppBundle:Author:delete }
+
+single_book:
+    path: /book/{id}/profile
+    defaults: { _controller: AppBundle:Book:profile }
+
+delete_book:
+    path: /book/{id}/delete
+    defaults: { _controller: AppBundle:Book:delete }
