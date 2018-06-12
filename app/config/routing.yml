@@ -2,13 +2,17 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
+homepage:
+    path: /
+    defaults: { _controller: AppBundle:Home:index}
+
+homepage_page:
+    path: /{page}
+    defaults: { _controller: AppBundle:Home:index}
+
 author_add:
     path:     /author/add/{name}
     defaults: { _controller: AppBundle:Author:add }
-
-author_list:
-    path:     /author/list
-    defaults: { _controller: AppBundle:Author:list }
 
 book_add_with_author:
     path:     /book/add
