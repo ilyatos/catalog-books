@@ -9,3 +9,7 @@ author_add:
 author_list:
     path:     /author/list
     defaults: { _controller: AppBundle:Author:list }
+
+book_add_with_author:
+    path:     /book/add
+    defaults: { _controller: AppBundle:Book:create }
