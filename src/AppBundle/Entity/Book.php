@@ -179,7 +179,7 @@ class Book
      */
     public function addAuthor(\AppBundle\Entity\Author $author)
     {
-        $author->addBook($this);
+        //$author->addBook($this);
         $this->authors[] = $author;
 
         return $this;

@@ -86,7 +86,7 @@ class Author
      */
     public function addBook(\AppBundle\Entity\Book $book)
     {
-        $book->addAuthor($this);
+        //$book->addAuthor($this);
         $this->books[] = $book;
 
         return $this;
