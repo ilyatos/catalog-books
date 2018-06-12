@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    .container {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 10px;
+    }
+
+    #form_save {
+    border: 2px skyblue solid;
+    border-radius: 10px;
+    background: skyblue;
+    padding: .5em;
+    }
+
+    #form_save:hover {
+    background: #79b9d3;
+    }
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="author-profile" style="font-size: 1.5em">
+            <h3>
+                Добавить автора/книгу
+            </h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
