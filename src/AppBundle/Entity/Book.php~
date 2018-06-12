@@ -169,41 +169,4 @@ class Book
     }
     
 
-
-    /**
-     * Add author.
-     *
-     * @param \AppBundle\Entity\Author $author
-     *
-     * @return Book
-     */
-    public function addAuthor(\AppBundle\Entity\Author $author)
-    {
-        $author->addBook($this);
-        $this->authors[] = $author;
-
-        return $this;
-    }
-
-    /**
-     * Remove author.
-     *
-     * @param \AppBundle\Entity\Author $author
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeAuthor(\AppBundle\Entity\Author $author)
-    {
-        return $this->authors->removeElement($author);
-    }
-
-    /**
-     * Get authors.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAuthors()
-    {
-        return $this->authors;
-    }
 }
