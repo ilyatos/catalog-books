@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use AppBundle\Classes\PaginationHelper;
+
 /**
  * AuthorRepository
  *
@@ -10,4 +13,19 @@ namespace AppBundle\Repository;
  */
 class AuthorRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param int $currentPage
+     * @return Paginator
+     */
+    public function getAllByName($currentPage = 1, $limit = 5)
+    {
+        // Create our query
+        $query = $this->createQueryBuilder('p')
+            ->orderBy('p.name', 'DESC')
+            ->getQuery();
+
+        $paginator = PaginationHelper::paginate($query, $currentPage, $limit);
+
+        return $paginator;
+    }
 }
