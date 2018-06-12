@@ -3,11 +3,45 @@
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <style type="text/css">
+            body {
+                background-color: #5bb6e6;
+                padding: 3em;
+                font-family: 'Arial', serif;
+                font-weight: initial;
+                color: #fff;
+            }
+
+            h3 {
+                font-weight: bolder;
+                font-size: x-large;
+                margin-bottom: .3em;
+            }
+
+            ul {
+                list-style-type: none;
+                margin: 0 0 2em 0;
+                padding: 0;
+            }
+
+            ul li a {
+                font-size: 1.5em;
+            }
+
+            a {
+                color: #fff;
+                text-decoration: none;
+            }
+            {% block stylesheets %}{% endblock %}
+        </style>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% endblock %}
+        <footer>
+
+        </footer>
         {% block javascripts %}{% endblock %}
     </body>
 </html>
