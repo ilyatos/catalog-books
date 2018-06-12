@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="book-profile">
+            <h3>
+                Информация о книге
+            </h3>
+            <ul>
+                <li>
+                    <a>Название – {{ book.title }}.</a>
+                </li>
+                <li>
+                    <a>Количество страниц – {{ book.numberOfPages }}.</a>
+                </li>
+                <li>
+                    <a>Год публикации – {{ book.publishingYear }}.</a>
+                </li>
+                <li>
+                    <a>ISBN – {{ book.isbn }}.</a>
+                </li>
+            </ul>
+            <form method="get" action="/book/{{ book.id }}/edit">
+                <input type="submit" class="btn" value="Редактировать книгу" style="color: grey;">
+            </form>
+            <form method="get" action="/book/{{ book.id }}/delete">
+                <input type="submit" class="btn" value="Удалить книгу" style="color: white; background-color: #C82829">
+            </form>
+        </div>
+        <div class="authors">
+            <h3>
+                Авторы книги
+            </h3>
+            <ul>
+                {% for author in authors %}
+                    <li><a href="/author/{{ author.id }}/profile">{{ author.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
