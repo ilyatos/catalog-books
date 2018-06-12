@@ -14,12 +14,9 @@ class BookRepository extends \Doctrine\ORM\EntityRepository
 {
     public function getAllByTitle($currentPage = 1, $limit = 5)
     {
-        // Create our query
         $query = $this->createQueryBuilder('p')
-            ->orderBy('p.title', 'DESC')
+            ->orderBy('p.title', 'ASC')
             ->getQuery();
-
-        // No need to manually get get the result ($query->getResult())
 
         $paginator = PaginationHelper::paginate($query, $currentPage, $limit);
 

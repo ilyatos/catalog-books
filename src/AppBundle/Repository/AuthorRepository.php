@@ -19,13 +19,17 @@ class AuthorRepository extends \Doctrine\ORM\EntityRepository
      */
     public function getAllByName($currentPage = 1, $limit = 5)
     {
-        // Create our query
         $query = $this->createQueryBuilder('p')
-            ->orderBy('p.name', 'DESC')
+            ->orderBy('p.name', 'ASC')
             ->getQuery();
 
         $paginator = PaginationHelper::paginate($query, $currentPage, $limit);
 
         return $paginator;
+    }
+
+    public function getBooks()
+    {
+      //  $query = $this->createQueryBuilder()
     }
 }
