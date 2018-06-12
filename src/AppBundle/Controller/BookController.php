@@ -13,6 +13,7 @@ use AppBundle\Entity\Author;
 use AppBundle\Entity\Book;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
 {
@@ -20,23 +21,23 @@ class BookController extends Controller
     public function createAction(EntityManagerInterface $em)
     {
         $author = new Author();
-        $author->setName('Lev');
+        $author->setName('Lev66');
 
         $book = new Book();
-        $book->setTitle('TTT');
-        $book->setPublishingYear(1997);
-        $book->setIsbn('2-3-44-5');
-        $book->setNumberOfPages(222);
+        $book->setTitle('RRR');
+        $book->setPublishingYear(2018);
+        $book->setIsbn('2-21-422-41');
+        $book->setNumberOfPages(105);
 
-        $book->addAuthor($author);
         $author->addBook($book);
+        $book->addAuthor($author);
 
         $em->persist($author);
         $em->persist($book);
 
         $em->flush();
 
-        return null;
+        return new Response(null);
     }
 
 }
