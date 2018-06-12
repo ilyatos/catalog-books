@@ -18,6 +18,10 @@ delete_author:
     path: /author/{id}/delete
     defaults: { _controller: AppBundle:Author:delete }
 
+add_author:
+    path: /author/add
+    defaults: { _controller: AppBundle:Author:add }
+
 single_book:
     path: /book/{id}/profile
     defaults: { _controller: AppBundle:Book:profile }
@@ -25,3 +29,7 @@ single_book:
 delete_book:
     path: /book/{id}/delete
     defaults: { _controller: AppBundle:Book:delete }
+
+add_book:
+    path: /book/add
+    defaults: { _controller: AppBundle:Book:add }
