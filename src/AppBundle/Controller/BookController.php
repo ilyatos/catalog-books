@@ -53,21 +53,29 @@ class BookController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $bookRep = $this->getDoctrine()->getRepository(Book::class);
+
             /**
-             * @var Book $bookForm
+             * @var Book $book
              */
             $book = $form->getData();
 
-            $authors = $bookForm->getAuthors();
+            if (!$bookRep->findBy([
+                    'title'=> $book->getTitle(),
+                    'publishingYear' => $book->getPublishingYear()
+                ]) and !$bookRep->findBy(['isbn' => $book->getIsbn()])) {
+                
+                $authors = $book->getAuthors();
 
-            foreach ($authors as $author) {
-                $author->addBook($book);
-                $book->addAuthor($author);
+                foreach ($authors as $author) {
+                    $author->addBook($book);
+                    $book->addAuthor($author);
 
-                $em->persist($author);
-                $em->persist($book);
+                    $em->persist($author);
+                    $em->persist($book);
 
-                $em->flush();
+                    $em->flush();
+                }
             }
 
             return $this->redirectToRoute('homepage');
@@ -127,6 +135,7 @@ class BookController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $em->remove($bookForm);
             $em->flush();
             /**
