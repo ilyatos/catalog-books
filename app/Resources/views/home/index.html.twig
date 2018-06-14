@@ -56,7 +56,7 @@
                     <li>Книг нет, ну или больше нет.</li>
                 {% endif %}
                 {% for book in books %}
-                    <li><a href="/book/{{ book.id }}/profile">Название - {{ book.title }}. ISBN {{ book.isbn }}</a> </li>
+                    <li><a href="/book/{{ book.id }}/profile"> {{ book.title }}. ISBN {{ book.isbn }}</a> </li>
                 {% endfor %}
             </ul>
             <a class="adder" href="/book/add">Добавить книгу</a>
