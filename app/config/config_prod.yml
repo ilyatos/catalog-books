@@ -20,15 +20,3 @@ monolog:
         console:
             type: console
             process_psr_3_messages: false
-
-doctrine:
-    dbal:
-        default_connection: default
-        connections:
-            default:
-                driver:   %database_driver%
-                dbname:   %database_name%
-                user:     %database_user%
-                host:     %database_host%
-                password: %database_password%
-                unix_socket: /tmp/mysql.sock
