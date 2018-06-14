@@ -30,13 +30,7 @@ class AuthorController extends Controller
     {
         $authorForm = new AuthorForm();
 
-        $form = $this->createFormBuilder($authorForm)
-            ->add('firstName', TextType::class, ['label' => 'Имя автора'])
-            ->add('secondName', TextType::class, ['label' => 'Фамилия'])
-            ->add('patronymic', TextType::class, ['label' => 'Отчество (при наличии)',
-                'required' => false])
-            ->add('save', SubmitType::class, ['label' => 'Опубликовать автора'])
-            ->getForm();
+        $form = $form = $this->createAuthorForm($authorForm, 'Добавить автора');
 
         $form->handleRequest($request);
 
@@ -59,9 +53,39 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+    public function editAction(EntityManagerInterface $em, Request $request, $id)
     {
-        
+        $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
+        $authorForm = new AuthorForm();
+
+        $authorName  = explode(' ', $author->getName());
+
+        $authorForm->setFirstName($authorName[1]);
+        $authorForm->setSecondName($authorName[0]);
+
+        if (array_key_exists(2, $authorName)) {
+            $authorForm->setPatronymic($authorName[2]);
+        }
+
+        $form = $this->createAuthorForm($authorForm, 'Отредактировать автора');
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $authorForm = $form->getData();
+
+            $name = $authorForm->getSecondName().' '.$authorForm->getFirstName().' '.$authorForm->getPatronymic();
+            $author->setName($name);
+
+            $em->persist($author);
+            $em->flush();
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('add_author_book.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -102,6 +126,14 @@ class AuthorController extends Controller
         return $this->redirectToRoute('homepage');
     }
 
-
+    private function createAuthorForm($authorForm, $submitLabel) {
+        return $this->createFormBuilder($authorForm)
+            ->add('firstName', TextType::class, ['label' => 'Имя автора'])
+            ->add('secondName', TextType::class, ['label' => 'Фамилия'])
+            ->add('patronymic', TextType::class, ['label' => 'Отчество (при наличии)',
+                'required' => false])
+            ->add('save', SubmitType::class, ['label' => $submitLabel])
+            ->getForm();
+    }
 
 }
