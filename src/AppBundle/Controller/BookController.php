@@ -10,6 +10,7 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\Entity\Author;
+use AppBundle\Entity\AuthorForm;
 use AppBundle\Entity\Book;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
 class BookController extends Controller
 {
 
-   /* public function addAction(EntityManagerInterface $em, Request $request)
+    public function addAction(EntityManagerInterface $em, Request $request)
     {
         $bookForm = new Book();
 
@@ -45,11 +46,22 @@ class BookController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /**
+             * @var Book $bookForm
+             */
+            $book = $form->getData();
 
-            $bookForm = $form->getData();
+            $authors = $bookForm->getAuthors();
 
-            $em->persist($bookForm);
-            $em->flush();
+            foreach ($authors as $author) {
+                $author->addBook($book);
+                $book->addAuthor($author);
+
+                $em->persist($author);
+                $em->persist($book);
+
+                $em->flush();
+            }
 
             return $this->redirectToRoute('homepage');
         }
@@ -57,17 +69,19 @@ class BookController extends Controller
         return $this->render('add_author_book.html.twig', [
             'form' => $form->createView(),
         ]);
-    }*/
+    }
 
     /**
      * В своё опрадание за этот говнокод (хардкод) внизу скажу, что то, что наверху,
      * работало только для одного автора. Ну а может я просто ненавижу построители форм? Кто знает...
      *
+     * УРА. Я СДЕЛАЛ ТО, ЧТО НАВЕРХУ!
+     *
      * @param EntityManagerInterface $em
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function addAction(EntityManagerInterface $em, Request $request)
+    /*public function addAction(EntityManagerInterface $em, Request $request)
     {
         $data = $request->request->all();
 
@@ -97,9 +111,12 @@ class BookController extends Controller
         }
 
         return $this->render('add_book.html.twig', [
+            'actionUrl' => '/book/add',
             'authors' => $authors,
+            'data' => [],
+            'authorsLabel' => 'Добавить авторов'
         ]);
-    }
+    }*/
 
     public function profileAction($id)
     {
@@ -114,7 +131,7 @@ class BookController extends Controller
         ]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+    public function editAction(EntityManagerInterface $em, Request $request, $id)
     {
 
     }
