@@ -17,4 +17,4 @@ $container->setParameter('mailer_password', $_ENV['MANDRILL_APIKEY']);
 
 // Other settings
 $container->setParameter('locale', 'en');
-$container->setParameter('secret', 'your_secret');
+$container->setParameter('secret', '972f0ab776bfe603fec73ea2ece1225facfe7db8');
