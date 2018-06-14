@@ -114,6 +114,11 @@ class BookController extends Controller
         ]);
     }
 
+    public function editAction(EntityManagerInterface $em, $id)
+    {
+
+    }
+
     public function deleteAction(EntityManagerInterface $em, $id)
     {
         $bookRep = $this->getDoctrine()->getRepository(Book::class);
