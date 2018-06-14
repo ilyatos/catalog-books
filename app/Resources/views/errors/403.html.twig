@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 10px;
+    }
+{% endblock %}
+
+{% block title %}Книга{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="error">
+            <h2>
+                Запрещено!
+            </h2>
+        </div>
+    </div>
+{% endblock %}

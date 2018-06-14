@@ -64,7 +64,7 @@ class BookController extends Controller
                     'title'=> $book->getTitle(),
                     'publishingYear' => $book->getPublishingYear()
                 ]) and !$bookRep->findBy(['isbn' => $book->getIsbn()])) {
-                
+
                 $authors = $book->getAuthors();
 
                 foreach ($authors as $author) {
@@ -76,9 +76,10 @@ class BookController extends Controller
 
                     $em->flush();
                 }
+                return $this->redirectToRoute('homepage');
+            } else {
+                return $this->render('errors/403.html.twig');
             }
-
-            return $this->redirectToRoute('homepage');
         }
 
         return $this->render('add_author_book.html.twig', [

@@ -45,9 +45,11 @@ class AuthorController extends Controller
 
                 $em->persist($author);
                 $em->flush();
-            }
 
-            return $this->redirectToRoute('homepage');
+                return $this->redirectToRoute('homepage');
+            } else {
+                return $this->render('errors/403.html.twig');
+            }
         }
 
         return $this->render('add_author_book.html.twig', [
