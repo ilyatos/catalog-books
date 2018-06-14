@@ -59,7 +59,7 @@ class AuthorController extends Controller
         ]);
     }
 
-    public function editAction()
+    public function editAction(EntityManagerInterface $em, $id)
     {
         
     }
