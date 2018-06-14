@@ -25,6 +25,13 @@ use Symfony\Component\HttpFoundation\Response;
 class BookController extends Controller
 {
 
+    /**
+     * Add a new book
+     *
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function addAction(EntityManagerInterface $em, Request $request)
     {
         $bookForm = new Book();
@@ -72,52 +79,11 @@ class BookController extends Controller
     }
 
     /**
-     * В своё опрадание за этот говнокод (хардкод) внизу скажу, что то, что наверху,
-     * работало только для одного автора. Ну а может я просто ненавижу построители форм? Кто знает...
+     * Get the book page
      *
-     * УРА. Я СДЕЛАЛ ТО, ЧТО НАВЕРХУ!
-     *
-     * @param EntityManagerInterface $em
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @param $id
+     * @return Response
      */
-    /*public function addAction(EntityManagerInterface $em, Request $request)
-    {
-        $data = $request->request->all();
-
-        $authorsRep = $this->getDoctrine()->getRepository(Author::class);
-        $authors = $authorsRep->findAll();
-
-        if ($data) {
-            $book = new Book();
-
-            $book->setTitle($data['title']);
-            $book->setNumberOfPages($data['numberOfPages']);
-            $book->setIsbn($data['isbn']);
-            $book->setPublishingYear($data['publishingYear']);
-
-            foreach ($data['select'] as $authorId) {
-                $author = $authorsRep->find($authorId);
-                $author->addBook($book);
-                $book->addAuthor($author);
-
-                $em->persist($author);
-                $em->persist($book);
-
-                $em->flush();
-            }
-
-            return $this->redirectToRoute('homepage');
-        }
-
-        return $this->render('add_book.html.twig', [
-            'actionUrl' => '/book/add',
-            'authors' => $authors,
-            'data' => [],
-            'authorsLabel' => 'Добавить авторов'
-        ]);
-    }*/
-
     public function profileAction($id)
     {
         $bookRep = $this->getDoctrine()->getRepository(Book::class);
@@ -131,11 +97,70 @@ class BookController extends Controller
         ]);
     }
 
+    /**
+     * Edit the book
+     *
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function editAction(EntityManagerInterface $em, Request $request, $id)
     {
 
+        $bookForm = $this->getDoctrine()->getRepository(Book::class)->find($id);
+
+        $form = $this->createFormBuilder($bookForm)
+            ->add('title', TextType::class, ['label' => 'Название книги: '])
+            ->add('publishingYear', NumberType::class, ['label' => 'Год издания: '])
+            ->add('isbn', TextType::class, ['label' => 'ISBN книги: '])
+            ->add('numberOfPages', NumberType::class, ['label' => 'Количество страниц: '])
+            ->add('authors',  EntityType::class, [
+                'class' => 'AppBundle:Author',
+                'choice_label' => 'name',
+                'label' => 'Добавить авторов: ',
+                'multiple' => 'true'
+            ])
+            ->add('save', SubmitType::class, ['label' => 'Добавить книгу'])
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->remove($bookForm);
+            $em->flush();
+            /**
+             * @var Book $bookForm
+             */
+            $book = $form->getData();
+
+            $authors = $bookForm->getAuthors();
+
+            foreach ($authors as $author) {
+                $author->addBook($book);
+                $book->addAuthor($author);
+
+                $em->persist($author);
+                $em->persist($book);
+
+                $em->flush();
+            }
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('add_author_book.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
+    /**
+     * Delete the book
+     *
+     * @param EntityManagerInterface $em
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
     public function deleteAction(EntityManagerInterface $em, $id)
     {
         $bookRep = $this->getDoctrine()->getRepository(Book::class);

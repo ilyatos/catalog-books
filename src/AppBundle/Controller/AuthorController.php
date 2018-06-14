@@ -35,15 +35,17 @@ class AuthorController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $authorForm = $form->getData();
+            $name = $authorForm->getSecondName().' '.$authorForm->getFirstName().' '.$authorForm->getPatronymic();
+
             $author = new Author();
 
-            $authorForm = $form->getData();
+            if (!$this->getDoctrine()->getRepository(Author::class)->findBy(['name' => $name])) {
+                $author->setName($name);
 
-            $name = $authorForm->getSecondName().' '.$authorForm->getFirstName().' '.$authorForm->getPatronymic();
-            $author->setName($name);
-
-            $em->persist($author);
-            $em->flush();
+                $em->persist($author);
+                $em->flush();
+            }
 
             return $this->redirectToRoute('homepage');
         }
@@ -53,6 +55,14 @@ class AuthorController extends Controller
         ]);
     }
 
+    /**
+     * Edit the author
+     *
+     * @param EntityManagerInterface $em
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     */
     public function editAction(EntityManagerInterface $em, Request $request, $id)
     {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
@@ -126,6 +136,11 @@ class AuthorController extends Controller
         return $this->redirectToRoute('homepage');
     }
 
+    /**
+     * @param $authorForm
+     * @param $submitLabel
+     * @return \Symfony\Component\Form\FormInterface
+     */
     private function createAuthorForm($authorForm, $submitLabel) {
         return $this->createFormBuilder($authorForm)
             ->add('firstName', TextType::class, ['label' => 'Имя автора'])
