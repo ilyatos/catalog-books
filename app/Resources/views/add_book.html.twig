@@ -27,25 +27,29 @@
             <h3>
                 Добавить автора/книгу
             </h3>
-            <form action="/book/add" method="post">
+            <form action="{{ actionUrl }}" method="post">
                 <div>
                     <label for="title">Название книги: </label>
-                    <input title="title" type="text" id="form_title" name="title" required="required">
+                    <input title="title" type="text" id="form_title" name="title"
+                           required="required" value="{{ data.title }}">
                 </div>
                 <div>
                     <label for="publishingYear" class="required">Год издания: </label>
-                    <input title="publishingYear" type="text" id="form_title" name="publishingYear" required="required">
+                    <input title="publishingYear" type="text" id="form_title" name="publishingYear"
+                           required="required" value="{{ data.publishingYear }}">
                 </div>
                 <div>
                     <label for="isbn" class="required">ISBN: </label>
-                    <input title="isbn" type="text" id="form_title" name="isbn" required="required">
+                    <input title="isbn" type="text" id="form_title" name="isbn"
+                           required="required" value="{{ data.isbn}}">
                 </div>
                 <div>
                     <label for="numberOfPages" class="required">Количество страниц: </label>
-                    <input title= "numberOfPages" type="text" id="form_title" name="numberOfPages" required="required">
+                    <input title= "numberOfPages" type="text" id="form_title" name="numberOfPages"
+                           required="required" value="{{ data.numberOfPages}}">
                 </div>
                 <div>
-                    <label for="selecter" class="required">Добавить авторов: </label>
+                    <label for="selecter" class="required">{{ authorsLabel }}</label>
                     <select name="select[]" size="3" multiple title="selecter">
                         {% for author in authors %}
                             <option value="{{ author.id }}">{{ author.name }}</option>
